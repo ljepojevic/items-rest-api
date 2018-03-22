@@ -51,8 +51,28 @@ crossorigin="anonymous"></script>
 			addItem(text, body);
 		})
 
-		// Add Item
+		// Delete item
+		$('body').on('click', '.deleteLink', function(e){
+			e.preventDefault();
+			let id = $(this).data('id');
+			deleteItem(id);
+		});
 
+		function deleteItem(id){
+			$.ajax({
+				method: 'POST',
+				url: 'http://example.local/api/items/'+id,
+				data: {
+					_method: 'DELETE'
+				}
+			})
+			.done(function(item){
+				alert(`Item removed`);
+				location.reload();
+			});			
+		};
+
+		// Add Item
 		function addItem(text, body){
 			$.ajax({
 				method: 'POST',
@@ -76,7 +96,7 @@ crossorigin="anonymous"></script>
 			.done(function(items){
 				let output = '';
 				$.each(items, function(key, item){
-					output+= `<li class="list-group-item"><strong>${item.text}: </strong>${item.body}</li>`;
+					output+= `<li class="list-group-item"><strong>${item.text}: </strong>${item.body} <a href="#" class="deleteLink" data-id="${item.id}">Delete</a></li>`;
 				});
 				$('#items').append(output);
 			});

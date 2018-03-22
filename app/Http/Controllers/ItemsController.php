@@ -85,7 +85,7 @@ class ItemsController extends Controller
             return $response;
         }
         else {
-            // Fint item
+            // Find item
             $item = Item::find($id);
             $item->text = $request->input('text');
             $item->body = $request->input('body');
@@ -103,6 +103,13 @@ class ItemsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Item::find($id);
+        $item->delete();
+
+        $response = [
+            'response' => 'Item deleted',
+            'success' => true
+        ];
+        return $response;
     }
 }
